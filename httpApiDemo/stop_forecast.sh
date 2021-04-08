@@ -27,7 +27,7 @@ is_exist(){
 #启动方法
 start(){
   is_exist
-  if [ $? -eq "0" ]; then 
+  if [ $? -eq "0" ]; then    
     echo ">>> ${APP_NAME} is already running PID=${pid} <<<" 
   else 
     nohup python3 -u $PY_NAME > $APP_NAME\log\.log 2>&1 & 

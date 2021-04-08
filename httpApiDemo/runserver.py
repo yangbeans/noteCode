@@ -59,7 +59,7 @@ class DemoHandler(tornado.web.RequestHandler):
             input_ = json.loads(self.get_body_argument("data"))   #将json字符串形式转化为字典
             #self.plogger_.info("input_:%s"%input_)
             output_ = self.acs.my_add(input_)
-            # print(list(y_pred))
+            # print(list(y_pred))   
             return output_
         except Exception as e:
             s=sys.exc_info()
