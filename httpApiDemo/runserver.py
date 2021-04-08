@@ -53,7 +53,7 @@ class DemoHandler(tornado.web.RequestHandler):
         self.write(result)
         self.finish()
         
-    @run_on_executor
+    @run_on_executor   
     def forecast(self):
         try:
             input_ = json.loads(self.get_body_argument("data"))   #将json字符串形式转化为字典
