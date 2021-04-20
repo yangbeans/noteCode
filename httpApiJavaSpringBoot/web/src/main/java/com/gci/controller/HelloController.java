@@ -18,14 +18,14 @@ import java.util.Map;
 public class HelloController {
     // get请求业务逻辑处理
     @GetMapping("helloSpringGet")
-    public Map<String,Double> sayHelloGet(@RequestParam Map<String,Object> reqMap){   //@RequestParam Map<String,Object> reqMap
+    public Map<String,Double> myAddDoGet(@RequestParam Map<String,Object> reqMap){   //@RequestParam Map<String,Object> reqMap
         System.out.println("hhhhh");
-        return this.myAdd(reqMap);
+        return this.myAddDoPost(reqMap);
     }
 
     // post请求业务逻辑处理
     @PostMapping("helloSpringPost")
-    public Map<String,Double> myAdd(@RequestParam Map<String,Object> reqMap) {  //通过注解获取请求参数  @RequestParam Map<String,Object> reqMap
+    public Map<String,Double> myAddDoPost(@RequestParam Map<String,Object> reqMap) {  //通过注解获取请求参数  @RequestParam Map<String,Object> reqMap
         Map<String,Double> result = new HashMap<String,Double>();
         Map<String,Double> dataMap = new HashMap<String,Double>();
         String dataString = reqMap.get("data").toString();
