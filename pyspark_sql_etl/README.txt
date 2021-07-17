@@ -1,0 +1,3 @@
+用pyspark与hive sql交互，实现数据etl
+avro文件读取
+配置文件读与写
