@@ -61,8 +61,10 @@ try:
     print("reading data1......")
     # 读取can原始数据
     # 读取 parquet类型文件
-    data1 = spark.read.format('parquet').load("hdfs://10.91.125.8:8020/user/hive/warehouse/algorithm_db.db/routes_index_result", index=False, header=True)
-    #data1 = spark.read.format('parquet').load("hdfs://nameservice1/user/hive/warehouse/algorithm_db.db/routes_index_result", index=False, header=True)
+    data1 = spark.read.format('parquet').load("hdfs://10.91.125.8:8020/user/hive/warehouse/algorithm_db.db/can_dispatch", index=False, header=True) \
+                .filter((col("pdate")>='2021-07-02') & (col("pdate")<='2021-07-03'))  # 筛选所需时间范围，减少内存开销
+    #data1 = spark.read.format('parquet').load("hdfs://nameservice1/user/hive/warehouse/algorithm_db.db/can_dispatch", index=False, header=True) \
+    #             .filter((col("pdate")=='2021-07-02' ) & (col("pdate")<='2021-07-03'))
     
     # 读取avro类型的文件，记得添加读取avro所需jar包，jar包有两种添加方式：<1> 如上，os.environ['PYSPARK_SUBMIT_ARGS']中加入；<2> spark-submit 命令行时指定jar包或jar包所在的文件夹路径
     # data1 = spark.read.format('com.databricks.spark.avro').load("hdfs://10.91.125.8:8020/user/hive/warehouse/apts_db.db/ods_bus_can_dispatch", index=False, header=True)

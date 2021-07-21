@@ -38,6 +38,22 @@
                 一、os.environ['PYSPARK_SUBMIT_ARGS'] = "--jars "+jar绝对路径+" pyspark-shell"
                 二、在spark-submit提交运行时，命令行指定所需jar绝对路径或jar所在的文件夹绝对路径
             <4> 在conf参数设置时，要根据环境情况，对conf.set(...) 里的参数做调整和增加
-            <5> 读取avro文件时需要引入依赖jar包，具体读取avrowen类型的文件见代码
+            <5> 读取avro文件时需要引入依赖jar包，具体读取avrowen类型的文件见代码。（avro数据格式很难用，一般情况下，先将avro格式转换为parquet或其他容易使用的数据格式）
+            <6> 从内存角度考虑，从hdfs读取整个文件后，应按一定的条件进行过滤，采用filter()函数
+                例：data1 = spark.read.format('parquet').load("hdfs://10.91.125.8:8020/user/hive/warehouse/algorithm_db.db/can_dispatch", index=False, header=True) \
+                            .filter((col("pdate")>='2021-07-02') & (col("pdate")<='2021-07-03')) 
             
     5 submit shell代码和pyspark主函数py文件具体参考例中的 submit.sh 和main.py
+
+总结：
+    一、上述注意所述；
+    二、读取数据：
+        难用的数据格式在平台上很难读取和应用，如avro，这时需要把该种格式转换为简单易用，性能较好的格式，如parquet，再进行其他逻辑处理；
+        在部署的过程中，读parquet格式文件有时报错：java.lang.NoClassDefFoundError、有时正常。原因是集群某一个或某些机器缺少相应支持jar包导致
+    三、sql处理数据：
+        用该种方式读取数据然后注册成view，用sparksql模块sql语句处理数据的本质是spark集群直接与hdfs文件系统做交互实现计算，
+        与用spark api本质一致。不涉及到与hive交互。
+        正常运行的条件是：
+            <1> spark集群各节点功能正常；
+            <2> spark与hdfs文件系统连接正常，即spark集群与hdfs文件系统网络能通；
+    四、spark-submit时，注意对spark的几个常见重要参数进行调参，调参的主要目的是在spark运行最小内存不溢出、以及合理分配资源的前提下让spark集群计算速度更快。
